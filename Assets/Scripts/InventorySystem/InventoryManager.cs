@@ -10,8 +10,6 @@ public class InventoryManager : MonoBehaviour
     [SerializeField]
     SpriteAtlas spriteAtlas;
     [SerializeField]
-    string Po;
-    [SerializeField]
     GameObject container;
     [Tooltip(tooltip: "Loads the list using this format.")]
     [Multiline]
@@ -77,7 +75,7 @@ public class InventoryManager : MonoBehaviour
         {
             if (createPool.CreateGameObject(ITEMNAME, Vector3.zero, this.container.transform).TryGetComponent<IInventoryItem>(out var newitem))
             {
-                newitem.Icon.sprite =spriteAtlas.GetSprite(icons[0].name);
+                newitem.Icon.sprite =spriteAtlas.GetSprite(icons[itemData.IconIndex].name);
                 newitem.Name.text = itemData.Name;
                 newitem.Button.onClick.AddListener(() => { InventoryItemOnClick(newitem, itemData); });
                 this.items.Add(newitem);

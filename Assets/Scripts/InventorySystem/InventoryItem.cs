@@ -25,7 +25,19 @@ public class InventoryItem : MonoBehaviour, IInventoryItem
     public Button Button { get => button; set => button = value; }
 
 
-
-
     #endregion
+    #region Unity Methods
+    private void OnBecameInvisible()
+    {
+        Debug.Log($"Disableing Game OBject");
+        this.gameObject.SetActive(false);
+
+    }
+    private void OnBecameVisible()
+    {
+        Debug.Log($"Showing Game Object");
+        this.gameObject.SetActive(true);
+    }
+    #endregion
+
 }
