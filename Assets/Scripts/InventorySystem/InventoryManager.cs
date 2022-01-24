@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.U2D;
 
 public class InventoryManager : MonoBehaviour
 {
     #region Unity Fields
     [SerializeField]
-    InventoryItem inventoryItemPrefab;
+    SpriteAtlas spriteAtlas;
+    [SerializeField]
+    string Po;
     [SerializeField]
     GameObject container;
     [Tooltip(tooltip: "Loads the list using this format.")]
@@ -20,23 +23,40 @@ public class InventoryManager : MonoBehaviour
     [SerializeField]
     [Tooltip(tooltip: "Icons referenced by ItemData.IconIndex when instantiating new items.")]
     Sprite[] icons;
+
     #endregion
     #region Fields
+    private const string ITEMNAME = "InventoryItem";
     List<InventoryItemData> itemDatas = new List<InventoryItemData>();
-    List<InventoryItem> items;
+    List<IInventoryItem> items;
+    ICreatePool createPool;
     #endregion
     #region Unity Methods
     void Start()
     {
+        //Gets First Pooled object from Interface
+        this.GetPoolSystem();
         this.ClearItems();
-        this.itemDatas = GenerateItemDatas(this.itemJson);
-        
-        // Select the first item.
+        this.GenerateItemDatas(this.itemJson);
+        this.FillContainer();
         InventoryItemOnClick(this.items[0], this.itemDatas[0]);
+
+
     }
     #endregion
 
     #region Private Methods
+    /// <summary>
+    /// Find First Pool system from scene
+    /// </summary>
+    void GetPoolSystem()
+    {
+        createPool = GameObject.FindObjectsOfType<MonoBehaviour>().OfType<ICreatePool>().FirstOrDefault();
+        if (createPool == null)
+        {
+            Debug.LogError($"<color=red>There is No GameobjectPooler in Scene </color>");
+        }
+    }
     /// <summary>
     ///  Clears all items
     /// </summary>
@@ -46,42 +66,43 @@ public class InventoryManager : MonoBehaviour
         var items = container.GetComponentsInChildren<InventoryItem>().ToList();
         //refactored to linq
         items.ForEach(x => x.gameObject.transform.SetParent(null));
-      
+
 
     }
     void FillContainer()
     {
         // Instantiate items in the Scroll View.
-        this.items = new List<InventoryItem>();
+        this.items = new List<IInventoryItem>();
         foreach (InventoryItemData itemData in this.itemDatas)
         {
-            var newItem = GameObject.Instantiate<InventoryItem>(this.inventoryItemPrefab);
-            newItem.Icon.sprite = icons[itemData.IconIndex];
-            newItem.Name.text = itemData.Name;
-            newItem.transform.SetParent(container.transform);
-            newItem.Button.onClick.AddListener(() => { InventoryItemOnClick(newItem, itemData); });
-            this.items.Add(newItem);
+            if (createPool.CreateGameObject(ITEMNAME, Vector3.zero, this.container.transform).TryGetComponent<IInventoryItem>(out var newitem))
+            {
+                newitem.Icon.sprite =spriteAtlas.GetSprite(icons[0].name);
+                newitem.Name.text = itemData.Name;
+                newitem.Button.onClick.AddListener(() => { InventoryItemOnClick(newitem, itemData); });
+                this.items.Add(newitem);
+            }
         }
 
     }
 
     /// <summary>
-    /// Returns Array From Json
+    /// Returns List From Json
     /// </summary>
     /// <param name="json"></param>
     /// <returns></returns>
-    List<InventoryItemData> GenerateItemDatas(string json)
+    void GenerateItemDatas(string json)
     {
-        return JsonUtility.FromJson<InventoryItemDatas>(json).ItemDatas.ToList();
+        this.itemDatas = JsonUtility.FromJson<InventoryItemDatas>(json).ItemDatas.ToList();
     }
-
-     void InventoryItemOnClick(InventoryItem itemClicked, InventoryItemData itemData)
+    /// <summary>
+    ///  sets clicked item color to red other ones to white
+    /// </summary>
+    /// <param name="itemClicked"></param>
+    /// <param name="itemData"></param>
+    void InventoryItemOnClick(IInventoryItem itemClicked, InventoryItemData itemData)
     {
-
-        foreach (var item in items)
-        {
-            item.Background.color = Color.white;
-        }
+        this.items.ForEach(x => x.Background.color = Color.white);
         itemClicked.Background.color = Color.red;
     }
     #endregion
