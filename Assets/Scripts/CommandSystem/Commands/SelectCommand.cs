@@ -5,6 +5,7 @@ using UnityEngine;
 public class SelectCommand : ICommand
 {
     private IInfoPanel currentPanel;
+    private IInfoPanel previousPanel;
 
     public SelectCommand(IInfoPanel currentpanel)
     {
