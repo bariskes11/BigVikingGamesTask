@@ -1,16 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
     #region Unity Fields
-    //public InventoryInfoPanel InfoPanel;
     [SerializeField]
-    IInfoPanel infoPanel;
-    
-    [SerializeField]
-     InventoryItem inventoryItemPrefab;
+    InventoryItem inventoryItemPrefab;
     [SerializeField]
     GameObject container;
     [Tooltip(tooltip: "Loads the list using this format.")]
@@ -24,67 +21,69 @@ public class InventoryManager : MonoBehaviour
     [Tooltip(tooltip: "Icons referenced by ItemData.IconIndex when instantiating new items.")]
     Sprite[] icons;
     #endregion
-
-
-    [Serializable]
-    private class InventoryItemDatas
-    {
-        public InventoryItemData[] ItemDatas;
-    }
-
-    private InventoryItemData[] ItemDatas;
-
-    private List<InventoryItem> Items;
-
+    #region Fields
+    List<InventoryItemData> itemDatas = new List<InventoryItemData>();
+    List<InventoryItem> items;
+    #endregion
+    #region Unity Methods
     void Start()
     {
+        this.ClearItems();
+        this.itemDatas = GenerateItemDatas(this.itemJson);
+        
+        // Select the first item.
+        InventoryItemOnClick(this.items[0], this.itemDatas[0]);
+    }
+    #endregion
+
+    #region Private Methods
+    /// <summary>
+    ///  Clears all items
+    /// </summary>
+    void ClearItems()
+    {
         // Clear existing items already in the list.
-         var items = container.GetComponentsInChildren<InventoryItem>();
-        foreach (InventoryItem item in items) {
-            item.gameObject.transform.SetParent(null);
-        }
+        var items = container.GetComponentsInChildren<InventoryItem>().ToList();
+        //refactored to linq
+        items.ForEach(x => x.gameObject.transform.SetParent(null));
+      
 
-        ItemDatas = GenerateItemDatas(this.itemJson, ItemGenerateScale);
-
+    }
+    void FillContainer()
+    {
         // Instantiate items in the Scroll View.
-        Items = new List<InventoryItem>();
-        foreach (InventoryItemData itemData in ItemDatas) {
+        this.items = new List<InventoryItem>();
+        foreach (InventoryItemData itemData in this.itemDatas)
+        {
             var newItem = GameObject.Instantiate<InventoryItem>(this.inventoryItemPrefab);
             newItem.Icon.sprite = icons[itemData.IconIndex];
             newItem.Name.text = itemData.Name;
             newItem.transform.SetParent(container.transform);
             newItem.Button.onClick.AddListener(() => { InventoryItemOnClick(newItem, itemData); });
-            Items.Add(newItem);       
+            this.items.Add(newItem);
         }
 
-        // Select the first item.
-        InventoryItemOnClick(Items[0], ItemDatas[0]);
     }
 
     /// <summary>
-    /// Generates an item list.
+    /// Returns Array From Json
     /// </summary>
-    /// <param name="json">JSON to generate items from. JSON must be an array of InventoryItemData.</param>
-    /// <param name="scale">Concats additional copies of the array parsed from json.</param>
-    /// <returns>An array of InventoryItemData</returns>
-    private InventoryItemData[] GenerateItemDatas(string json, int scale) 
+    /// <param name="json"></param>
+    /// <returns></returns>
+    List<InventoryItemData> GenerateItemDatas(string json)
     {
-        var itemDatas = JsonUtility.FromJson<InventoryItemDatas>(json).ItemDatas;
-        var finalItemDatas = new InventoryItemData[itemDatas.Length * scale];
-        for (var i = 0; i < itemDatas.Length; i++) {
-            for (var j = 0; j < scale; j++) {
-                finalItemDatas[i + j*itemDatas.Length] = itemDatas[i];
-            }
-        }
-
-        return finalItemDatas;
+        return JsonUtility.FromJson<InventoryItemDatas>(json).ItemDatas.ToList();
     }
 
-    private void InventoryItemOnClick(InventoryItem itemClicked, InventoryItemData itemData) 
+     void InventoryItemOnClick(InventoryItem itemClicked, InventoryItemData itemData)
     {
-        foreach (var item in Items) {
+
+        foreach (var item in items)
+        {
             item.Background.color = Color.white;
         }
         itemClicked.Background.color = Color.red;
     }
+    #endregion
+
 }
