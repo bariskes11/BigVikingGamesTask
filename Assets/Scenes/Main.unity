@@ -1118,7 +1118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemImage: {fileID: 1964813374}
-  text: {fileID: 2140209194}
+  name: {fileID: 2140209194}
   description: {fileID: 2037344837}
   stats: {fileID: 578191168}
 --- !u!1 &879903438

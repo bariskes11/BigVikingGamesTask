@@ -8,6 +8,7 @@ public class InventoryCommands  : MonoBehaviour, IInventoryCommand
     CommandList commands = new CommandList();
     #endregion
     #region Public Methods
+    [ContextMenu("ReturnPreviousItem")]
     public void ReturnPreviousItem()
     {
         commands.Undo();

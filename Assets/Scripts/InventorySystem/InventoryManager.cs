@@ -75,14 +75,26 @@ public class InventoryManager : MonoBehaviour
         {
             if (createPool.CreateGameObject(ITEMNAME, Vector3.zero, this.container.transform).TryGetComponent<IInventoryItem>(out var newitem))
             {
-                newitem.Icon.sprite =spriteAtlas.GetSprite(icons[itemData.IconIndex].name);
-                newitem.Name.text = itemData.Name;
-                newitem.Description = itemData.Description;
-                newitem.Stat = itemData.Stat;
-                newitem.Button.onClick.AddListener(() => { InventoryItemOnClick(newitem, itemData); });
-                this.items.Add(newitem);
+                AddItem(itemData, newitem);
             }
         }
+        foreach (InventoryItemData itemData in this.itemDatas)
+        {
+            if (createPool.CreateGameObject(ITEMNAME, Vector3.zero, this.container.transform).TryGetComponent<IInventoryItem>(out var newitem))
+            {
+                AddItem(itemData, newitem);
+            }
+        }
+    }
+
+    private void AddItem(InventoryItemData itemData, IInventoryItem newitem)
+    {
+        newitem.Icon.sprite = spriteAtlas.GetSprite(icons[itemData.IconIndex].name);
+        newitem.Name.text = itemData.Name;
+        newitem.Description = itemData.Description;
+        newitem.Stat = itemData.Stat;
+        newitem.Button.onClick.AddListener(() => { InventoryItemOnClick(newitem, itemData); });
+        this.items.Add(newitem);
     }
 
     /// <summary>
@@ -114,6 +126,7 @@ public class InventoryManager : MonoBehaviour
     {
         this.items.ForEach(x => x.Background.color = Color.white);
         itemClicked.Background.color = Color.red;
+        /// Added To Command List
         this.inventoryCommands.SelectedItem(itemClicked);
         EventManager.OnItemSelected.Invoke(itemClicked);
     }

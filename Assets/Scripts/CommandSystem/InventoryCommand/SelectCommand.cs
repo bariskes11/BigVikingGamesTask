@@ -19,7 +19,8 @@ public class SelectCommand : ICommand
 
     public void Undo()
     {
-        
+        //Calls Previous Selected Event
+        EventManager.OnItemSelected.Invoke(this.inventoryItem);
     }
 }
    
