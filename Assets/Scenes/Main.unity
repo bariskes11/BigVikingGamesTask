@@ -1102,7 +1102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3524837760268592273, guid: 467bab03591bf4a4f808b6a2b7d7e1d4, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3524837760268592273, guid: 467bab03591bf4a4f808b6a2b7d7e1d4, type: 3}
       propertyPath: m_AnchorMin.x
@@ -1110,7 +1110,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3524837760268592273, guid: 467bab03591bf4a4f808b6a2b7d7e1d4, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3524837760268592273, guid: 467bab03591bf4a4f808b6a2b7d7e1d4, type: 3}
       propertyPath: m_SizeDelta.x
@@ -3010,9 +3010,9 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
+  m_ChildScaleWidth: 1
+  m_ChildScaleHeight: 1
+  m_ReverseArrangement: 1
 --- !u!1 &2140209192
 GameObject:
   m_ObjectHideFlags: 0
