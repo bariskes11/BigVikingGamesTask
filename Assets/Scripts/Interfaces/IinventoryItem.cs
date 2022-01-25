@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+///  Inventory items interface 
+/// </summary>
 public interface IInventoryItem 
 {
     public Image Background { get; set; }

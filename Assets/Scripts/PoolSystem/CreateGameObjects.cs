@@ -28,9 +28,6 @@ public class CreateGameObjects : MonoBehaviour,ICreatePool
     }
     #endregion
     #region Unity Methods
-
-    
-
     void Awake()
     {
         StartPooling();
@@ -40,25 +37,22 @@ public class CreateGameObjects : MonoBehaviour,ICreatePool
     #region Interface Methods
     public void StartPooling()
     {
-        
         poolDic = GetComponent<PoolDictionary>();
         poolDic.ResetPool();
         poolDic.SetPool(gameObjectList, parent);
     }
+    /// <summary>
+    /// Creates Gameobject from pool
+    /// </summary>
+    /// <param name="Objname">Name of Game object</param>
+    /// <param name="pos">Gameobject Position</param>
+    /// <param name="parent">Parent Game object </param>
+    /// <returns></returns>
     public GameObject CreateGameObject(string Objname, Vector3 pos, Transform parent)
     {
         return poolDic.SpawnFromPool(Objname, pos, parent);
     }
-    public GameObject InstantiateObject(string TagName, Vector3 pos)
-    {
-        Pool item = gameObjectList.Where(x => x.Name == TagName).FirstOrDefault();
-        if (item != null)
-        {
-            return Instantiate(item.Prefab, pos, Quaternion.identity);
-        }
-        return null;
 
-    }
     #endregion
 
 

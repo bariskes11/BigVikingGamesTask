@@ -46,7 +46,6 @@ public class InventoryManager : MonoBehaviour
         this.InventoryItemOnClick(this.items[0], this.itemDatas[0]);
     }
     #endregion
-
     #region Private Methods
     /// <summary>
     /// Find First Pool system from scene
@@ -94,7 +93,7 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     /// <param name="itemData"></param>
     /// <param name="newitem"></param>
-    private void AddItem(InventoryItemData itemData, IInventoryItem newitem)
+    void AddItem(InventoryItemData itemData, IInventoryItem newitem)
     {
         newitem.Icon.sprite = spriteAtlas.GetSprite(icons[itemData.IconIndex].name);
         newitem.Name.text = itemData.Name;

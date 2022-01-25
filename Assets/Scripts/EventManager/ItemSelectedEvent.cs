@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// Custom Event 
+/// Custom Event for ItemSelection
 /// </summary>
 public class ItemSelectedEvent : UnityEvent<IInventoryItem>
 {

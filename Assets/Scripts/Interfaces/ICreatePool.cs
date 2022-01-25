@@ -9,5 +9,4 @@ public interface ICreatePool
 {
     public void StartPooling();
     public GameObject CreateGameObject(string Objname, Vector3 pos, Transform parent);
-    public GameObject InstantiateObject(string TagName, Vector3 pos);
 }
