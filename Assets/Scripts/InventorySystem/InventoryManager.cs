@@ -17,29 +17,29 @@ public class InventoryManager : MonoBehaviour
     string itemJson;
     [Tooltip(tooltip: "This is used in generating the items list. The number of additional copies to concat the list parsed from ItemJson.")]
     [SerializeField]
-    int ItemGenerateScale = 10;
+    int itemGenerateScale = 10;
     [SerializeField]
     [Tooltip(tooltip: "Icons referenced by ItemData.IconIndex when instantiating new items.")]
     Sprite[] icons;
-
     #endregion
     #region Fields
     private const string ITEMNAME = "InventoryItem";
     List<InventoryItemData> itemDatas = new List<InventoryItemData>();
     List<IInventoryItem> items;
+    IInventoryCommand inventoryCommands;
     ICreatePool createPool;
     #endregion
     #region Unity Methods
     void Start()
     {
+        inventoryCommands=  this.GetComponent<IInventoryCommand>();
+        if (this.inventoryCommands == null) { Debug.LogError("<color=red> there is no inventory command object!!</color>"); }
         //Gets First Pooled object from Interface
         this.GetPoolSystem();
         this.ClearItems();
         this.GenerateItemDatas(this.itemJson);
         this.FillContainer();
-        InventoryItemOnClick(this.items[0], this.itemDatas[0]);
-
-
+        this.InventoryItemOnClick(this.items[0], this.itemDatas[0]);
     }
     #endregion
 
@@ -77,11 +77,12 @@ public class InventoryManager : MonoBehaviour
             {
                 newitem.Icon.sprite =spriteAtlas.GetSprite(icons[itemData.IconIndex].name);
                 newitem.Name.text = itemData.Name;
+                newitem.Description = itemData.Description;
+                newitem.Stat = itemData.Stat;
                 newitem.Button.onClick.AddListener(() => { InventoryItemOnClick(newitem, itemData); });
                 this.items.Add(newitem);
             }
         }
-
     }
 
     /// <summary>
@@ -92,6 +93,17 @@ public class InventoryManager : MonoBehaviour
     void GenerateItemDatas(string json)
     {
         this.itemDatas = JsonUtility.FromJson<InventoryItemDatas>(json).ItemDatas.ToList();
+
+        var itemDatas = JsonUtility.FromJson<InventoryItemDatas>(json).ItemDatas;
+        var finalItemDatas = new InventoryItemData[itemDatas.Length * this.itemGenerateScale];
+        for (var i = 0; i < itemDatas.Length; i++)
+        {
+            for (var j = 0; j < this.itemGenerateScale; j++)
+            {
+                finalItemDatas[i + j * itemDatas.Length] = itemDatas[i];
+            }
+        }
+
     }
     /// <summary>
     ///  sets clicked item color to red other ones to white
@@ -102,6 +114,8 @@ public class InventoryManager : MonoBehaviour
     {
         this.items.ForEach(x => x.Background.color = Color.white);
         itemClicked.Background.color = Color.red;
+        this.inventoryCommands.SelectedItem(itemClicked);
+        EventManager.OnItemSelected.Invoke(itemClicked);
     }
     #endregion
 

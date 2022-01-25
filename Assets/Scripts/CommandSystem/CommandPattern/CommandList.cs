@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+///  Keeps Commands list as ICommand and Prevents stackoverflow with maxCommandcount
+///  Stack keeps all commands pops when undo Command ads new command to list when Executed
+/// </summary>
 public class CommandList
 {
     #region Fields

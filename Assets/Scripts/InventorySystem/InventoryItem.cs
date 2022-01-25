@@ -14,18 +14,17 @@ public class InventoryItem : MonoBehaviour, IInventoryItem
     [SerializeField]
     Button button;
     #endregion
-    #region Iterface Properties
-
+    #region Interface Properties
     public Image Background { get => backGround; set => backGround = value; }
-
     public Image Icon { get => icon; set => icon = value; }
 
     public TextMeshProUGUI Name { get => name; set => name = value; }
-
     public Button Button { get => button; set => button = value; }
-
-
+    private string description;
+    public string Description { get => this.description; set => this.description=value; }
+    private int stat;
+    public int Stat { get => this.stat; set => this.stat = value; }
     #endregion
-    
+
 
 }

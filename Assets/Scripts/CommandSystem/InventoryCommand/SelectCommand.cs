@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class SelectCommand : ICommand
 {
-    private IInfoPanel currentPanel;
-    private IInfoPanel previousPanel;
+    private IInventoryItem inventoryItem;
+    
 
-    public SelectCommand(IInfoPanel currentpanel)
+    public SelectCommand(IInventoryItem inventoryItem)
     {
-        this.currentPanel = currentpanel;
+        this.inventoryItem = inventoryItem;
     }
 
     public void Execute()
@@ -19,7 +19,7 @@ public class SelectCommand : ICommand
 
     public void Undo()
     {
-        throw new System.NotImplementedException();
+        
     }
 }
    

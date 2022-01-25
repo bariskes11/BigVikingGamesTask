@@ -9,7 +9,9 @@ public interface IInventoryItem
     public Image Background { get; set; }
     public Image Icon { get; set; }
     public TextMeshProUGUI Name { get; set; }
+    public string Description { get; set; }
     public Button Button { get; set; }
+    public int Stat { get; set; }
 
-    
+
 }

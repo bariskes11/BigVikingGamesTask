@@ -1080,7 +1080,7 @@ GameObject:
   m_Layer: 5
   m_Name: InfoPanel
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
@@ -1117,6 +1117,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b69f27d8a4d782040ad95cb4150b05d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemImage: {fileID: 1964813374}
+  text: {fileID: 2140209194}
+  description: {fileID: 2037344837}
+  stats: {fileID: 578191168}
 --- !u!1 &879903438
 GameObject:
   m_ObjectHideFlags: 0
@@ -2155,10 +2159,11 @@ GameObject:
   - component: {fileID: 1869649971}
   - component: {fileID: 1869649970}
   - component: {fileID: 1869649974}
+  - component: {fileID: 1869649975}
   m_Layer: 5
   m_Name: InventoryPanel
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
@@ -2469,7 +2474,7 @@ MonoBehaviour:
     \"Stat\": 69,\r\n            \"IconIndex\": 32\r\n        },\r\n        {\r\n           
     \"Name\": \"bracelet\",\r\n            \"Description\": \"A bracelet.\",\r\n           
     \"Stat\": 66,\r\n            \"IconIndex\": 8\r\n        }\r\n    ]\r\n}"
-  ItemGenerateScale: 10
+  itemGenerateScale: 50
   icons:
   - {fileID: 21300000, guid: 61986c4fa02578c4a8c4bc7815b6144f, type: 3}
   - {fileID: 21300000, guid: d6136a43c2949664396d94e82b7271a0, type: 3}
@@ -2510,6 +2515,18 @@ MonoBehaviour:
   - {fileID: 21300000, guid: fcce22944928625488372e22caba1b43, type: 3}
   - {fileID: 21300000, guid: 4f529f92b90ae57419f73ecabcde1243, type: 3}
   - {fileID: 21300000, guid: 22348d8f658bcf7488dd7b9b8549668d, type: 3}
+--- !u!114 &1869649975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869649969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 041328e270437384d941db856b87958f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1884966365
 GameObject:
   m_ObjectHideFlags: 0
@@ -2857,7 +2874,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.0000333786}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2052710873
@@ -3041,6 +3058,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2587224289919419578, guid: 7957bdfe9d5af40499726f57f7899648, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
     - target: {fileID: 2587224289919419578, guid: 7957bdfe9d5af40499726f57f7899648, type: 3}
       propertyPath: m_Name
       value: GameSystem

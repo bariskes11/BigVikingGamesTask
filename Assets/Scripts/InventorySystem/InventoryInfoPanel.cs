@@ -1,24 +1,39 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class InventoryInfoPanel : MonoBehaviour, IInfoPanel
+/// <summary>
+///  sets Selected inventory item values
+/// </summary>
+public class InventoryInfoPanel : MonoBehaviour
 {
-
-    #region Interface Properties
-    private Image itemImage;
-    public Image ItemImage { get => this.itemImage; set => this.itemImage=value; }
-    private new string name;
-    public string Name { get => this.name; set => this.name=value; }
-    private string description;
-    public string Description { get => this.description; set => this.description=value; }
-    private int stat;
-    public int Stat { get => this.stat; set => this.stat=value; }
+    #region Unity Fields
+    [SerializeField]
+    Image itemImage;
+    [SerializeField]
+    new TextMeshProUGUI name;
+    [SerializeField]
+    TextMeshProUGUI description;
+    [SerializeField]
+    TextMeshProUGUI stats;
     #endregion
-    #region Interface Methods
-    public void GetSelected(IInfoPanel obj)
+    #region Unity Methods
+    private void Start()
     {
-        
+        // Listens for Selected Event
+        EventManager.OnItemSelected.AddListener(SetSelectedValues);
     }
     #endregion
+    #region Private Methods
+    // sets All Items in InventoryItem
+    void SetSelectedValues(IInventoryItem item)
+    {
+        this.itemImage.sprite = item.Icon.sprite;
+        this.name.text = item.Name.text;
+        this.description.text = item.Description;
+        this.stats.text = item.Stat.ToString();
+
+    }
+    #endregion
+
 
 }
