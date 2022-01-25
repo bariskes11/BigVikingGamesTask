@@ -2,12 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+///  Executes selected command item 
+/// </summary>
 public class InventoryCommands  : MonoBehaviour, IInventoryCommand
 {
     #region Fields
     CommandList commands = new CommandList();
     #endregion
     #region Public Methods
+
     [ContextMenu("ReturnPreviousItem")]
     public void ReturnPreviousItem()
     {
