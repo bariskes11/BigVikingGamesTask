@@ -7,6 +7,10 @@ using UnityEngine.U2D;
 public class InventoryManager : MonoBehaviour
 {
     #region Unity Fields
+    [Range(1, 5)]
+    [Header("Load Data xx Times Based on value")]
+    [SerializeField]
+    int loadDataCount;
     [SerializeField]
     SpriteAtlas spriteAtlas;
     [SerializeField]
@@ -15,6 +19,7 @@ public class InventoryManager : MonoBehaviour
     [Multiline]
     [SerializeField]
     string itemJson;
+    
     [Tooltip(tooltip: "This is used in generating the items list. The number of additional copies to concat the list parsed from ItemJson.")]
     [SerializeField]
     int itemGenerateScale = 10;
@@ -32,7 +37,7 @@ public class InventoryManager : MonoBehaviour
     #region Unity Methods
     void Start()
     {
-        inventoryCommands=  this.GetComponent<IInventoryCommand>();
+        this.inventoryCommands=  this.GetComponent<IInventoryCommand>();
         if (this.inventoryCommands == null) { Debug.LogError("<color=red> there is no inventory command object!!</color>"); }
         //Gets First Pooled object from Interface
         this.GetPoolSystem();
@@ -49,7 +54,8 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     void GetPoolSystem()
     {
-        createPool = GameObject.FindObjectsOfType<MonoBehaviour>().OfType<ICreatePool>().FirstOrDefault();
+        // gets PoolSystem from Scene using linq
+        this.createPool = GameObject.FindObjectsOfType<MonoBehaviour>().OfType<ICreatePool>().FirstOrDefault();
         if (createPool == null)
         {
             Debug.LogError($"<color=red>There is No GameobjectPooler in Scene </color>");
@@ -71,18 +77,16 @@ public class InventoryManager : MonoBehaviour
     {
         // Instantiate items in the Scroll View.
         this.items = new List<IInventoryItem>();
-        foreach (InventoryItemData itemData in this.itemDatas)
+        /// added to load data more than once when needed (to check performance behaviour)
+        for (int i = 0; i < this.loadDataCount; i++)
         {
-            if (createPool.CreateGameObject(ITEMNAME, Vector3.zero, this.container.transform).TryGetComponent<IInventoryItem>(out var newitem))
+            foreach (InventoryItemData itemData in this.itemDatas)
             {
-                AddItem(itemData, newitem);
-            }
-        }
-        foreach (InventoryItemData itemData in this.itemDatas)
-        {
-            if (createPool.CreateGameObject(ITEMNAME, Vector3.zero, this.container.transform).TryGetComponent<IInventoryItem>(out var newitem))
-            {
-                AddItem(itemData, newitem);
+                if (createPool.CreateGameObject(ITEMNAME, Vector3.zero, this.container.transform).TryGetComponent<IInventoryItem>(out var newitem))
+                {
+
+                    AddItem(itemData, newitem);
+                }
             }
         }
     }
