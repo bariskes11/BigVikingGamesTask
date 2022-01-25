@@ -19,7 +19,6 @@ public class InventoryManager : MonoBehaviour
     [Multiline]
     [SerializeField]
     string itemJson;
-    
     [Tooltip(tooltip: "This is used in generating the items list. The number of additional copies to concat the list parsed from ItemJson.")]
     [SerializeField]
     int itemGenerateScale = 10;
@@ -78,19 +77,23 @@ public class InventoryManager : MonoBehaviour
         // Instantiate items in the Scroll View.
         this.items = new List<IInventoryItem>();
         /// added to load data more than once when needed (to check performance behaviour)
+        /// no needed in real development
         for (int i = 0; i < this.loadDataCount; i++)
         {
             foreach (InventoryItemData itemData in this.itemDatas)
             {
                 if (createPool.CreateGameObject(ITEMNAME, Vector3.zero, this.container.transform).TryGetComponent<IInventoryItem>(out var newitem))
                 {
-
                     AddItem(itemData, newitem);
                 }
             }
         }
     }
-
+    /// <summary>
+    /// Sets inventory and adds to item list
+    /// </summary>
+    /// <param name="itemData"></param>
+    /// <param name="newitem"></param>
     private void AddItem(InventoryItemData itemData, IInventoryItem newitem)
     {
         newitem.Icon.sprite = spriteAtlas.GetSprite(icons[itemData.IconIndex].name);
@@ -102,12 +105,13 @@ public class InventoryManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Returns List From Json
+    /// sets Item Datas from json
     /// </summary>
     /// <param name="json"></param>
     /// <returns></returns>
     void GenerateItemDatas(string json)
     {
+        // sets main data source
         this.itemDatas = JsonUtility.FromJson<InventoryItemDatas>(json).ItemDatas.ToList();
 
         var itemDatas = JsonUtility.FromJson<InventoryItemDatas>(json).ItemDatas;
@@ -132,6 +136,7 @@ public class InventoryManager : MonoBehaviour
         itemClicked.Background.color = Color.red;
         /// Added To Command List
         this.inventoryCommands.SelectedItem(itemClicked);
+        // Informed EventManager when Item Selected
         EventManager.OnItemSelected.Invoke(itemClicked);
     }
     #endregion
