@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-
+// keeps Invenory items properties and Inheris from InventoryItem 
 public class InventoryItem : MonoBehaviour, IInventoryItem
 {
     #region Unity Fields

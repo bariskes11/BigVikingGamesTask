@@ -27,6 +27,7 @@ public class InventoryInfoPanel : MonoBehaviour
     // sets All Items in InventoryItem
     void SetSelectedValues(IInventoryItem item)
     {
+
         this.itemImage.sprite = item.Icon.sprite;
         this.name.text = item.Name.text;
         this.description.text = item.Description;
